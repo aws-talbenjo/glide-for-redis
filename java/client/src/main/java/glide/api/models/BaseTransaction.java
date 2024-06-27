@@ -378,6 +378,20 @@ public abstract class BaseTransaction<T extends BaseTransaction<T>> {
     }
 
     /**
+     * Removes the specified <code>keys</code> from the database. A key is ignored if it does not
+     * exist.
+     *
+     * @see <a href="https://redis.io/commands/del/">redis.io</a> for details.
+     * @param keys The keys we wanted to remove.
+     * @return Command Response - The number of keys that were removed.
+     */
+    public T del(@NonNull GlideString[] keys) {
+        ArgsArray commandArgs = buildArgs(keys);
+        protobufTransaction.addCommands(buildCommand(Del, commandArgs));
+        return getThis();
+    }
+ 
+    /**
      * Gets the value associated with the given key, or null if no such value exists.
      *
      * @see <a href="https://redis.io/commands/get/">redis.io</a> for details.
