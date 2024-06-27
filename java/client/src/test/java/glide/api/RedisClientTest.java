@@ -1684,7 +1684,7 @@ public class RedisClientTest {
         testResponse.complete(value);
 
         // match on protobuf request
-        when(commandManager.<Long>submitNewCommand(eq(Decr), eq(new String[] {key}), any()))
+        when(commandManager.<Long>submitNewCommand(eq(Decr), eq(new GlideString[] {gs(key)}), any()))
                 .thenReturn(testResponse);
 
         // exercise

@@ -740,7 +740,7 @@ public abstract class BaseClient
     public CompletableFuture<Double> incrByFloat(@NonNull GlideString key, double amount) {
         return commandManager.submitNewCommand(
                 IncrByFloat,
-                new GlideString[] {key, gs(Double.toString(amount).getBytes())},
+                new GlideString[] {key, gs(Double.toString(amount))},
                 this::handleDoubleResponse);
     }
 
@@ -752,7 +752,7 @@ public abstract class BaseClient
     @Override
     public CompletableFuture<Long> decr(@NonNull GlideString key) {
         return commandManager.submitNewCommand(
-                Decr, new GlideString[] {gs(key)}, this::handleLongResponse);
+                Decr, new GlideString[] {key}, this::handleLongResponse);
     }
 
     @Override
@@ -2167,34 +2167,36 @@ public abstract class BaseClient
     }
 
     @Override
-    public CompletableFuture<Long> pfcount(@NonNull String[] keys) {
-        return commandManager.submitNewCommand(PfCount, keys, this::handleLongResponse);
-    }
-
-    @Override
-    public CompletableFuture<Long> pfcount(@NonNull String[] keys) {
-        return commandManager.submitNewCommand(PfCount, keys, this::handleLongResponse);
-    }
-
-    @Override
-    public CompletableFuture<String> pfmerge(
-            @NonNull String destination, @NonNull String[] sourceKeys) {
-        String[] arguments = ArrayUtils.addFirst(sourceKeys, destination);
-        return commandManager.submitNewCommand(PfMerge, arguments, this::handleStringResponse);
-    }
-
-    @Override
-    public CompletableFuture<String> pfmerge(
-            @NonNull String destination, @NonNull String[] sourceKeys) {
-        String[] arguments = ArrayUtils.addFirst(sourceKeys, destination);
-        return commandManager.submitNewCommand(PfMerge, arguments, this::handleStringResponse);
-    }
-
-    @Override
-    public CompletableFuture<Long> pfadd(@NonNull GlideString key, @NonNull String[] elements) {
-        String[] arguments = ArrayUtils.addFirst(elements, key);
+    public CompletableFuture<Long> pfadd(@NonNull GlideString key, @NonNull GlideString[] elements) {
+        GlideString[] arguments = ArrayUtils.addFirst(elements, key);
         return commandManager.submitNewCommand(PfAdd, arguments, this::handleLongResponse);
     }
+
+    @Override
+    public CompletableFuture<Long> pfcount(@NonNull String[] keys) {
+        return commandManager.submitNewCommand(PfCount, keys, this::handleLongResponse);
+    }
+
+    @Override
+    public CompletableFuture<Long> pfcount(@NonNull GlideString[] keys) {
+        return commandManager.submitNewCommand(PfCount, keys, this::handleLongResponse);
+    }
+
+    @Override
+    public CompletableFuture<String> pfmerge(
+            @NonNull String destination, @NonNull String[] sourceKeys) {
+        String[] arguments = ArrayUtils.addFirst(sourceKeys, destination);
+        return commandManager.submitNewCommand(PfMerge, arguments, this::handleStringResponse);
+    }
+
+//    @Override // Doesn't work with override for some reason!
+    public CompletableFuture<String> pfmerge(
+            @NonNull GlideString destination, @NonNull GlideString[] sourceKeys) {
+        GlideString[] arguments = ArrayUtils.addFirst(sourceKeys, destination);
+        return commandManager.submitNewCommand(PfMerge, arguments, this::handleStringResponse);
+    }
+
+    
 
     @Override
     public CompletableFuture<Long> touch(@NonNull String[] keys) {

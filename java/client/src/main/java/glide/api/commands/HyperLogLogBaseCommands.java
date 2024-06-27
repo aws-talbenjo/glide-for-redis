@@ -1,7 +1,7 @@
 /** Copyright Valkey GLIDE Project Contributors - SPDX Identifier: Apache-2.0 */
 package glide.api.commands;
-
 import java.util.concurrent.CompletableFuture;
+import glide.api.models.GlideString;
 
 /**
  * Supports commands and transactions for the "HyperLogLog Commands" group for standalone and
